@@ -1,0 +1,26 @@
+1.................................................................
+[rady@localhost rady]$ sudo nano /etc/httpd/conf.modules.d/00-mpm.conf
+2...........................................................
+[rady@localhost rady]$ sudo httpd -M | grep rewrite
+3..........................................................
+a
+[rady@localhost rady]$ sudo nano /etc/httpd/conf/httpd.conf
+
+RewriteEngine on
+RewriteCond %{QUERY_STRING} forbidden
+RewriteRule "^/page(.*)$"  - [F]
+[rady@localhost rady]$ sudo systemctl restart httpd
+b.................................................................
+RewriteCond %{QUERY_STRING} rady
+RewriteRule "^/page(.*)$"  "page?" [R]
+[rady@localhost rady]$ sudo systemctl restart httpd
+c.........................................................................
+RewriteCond %{QUERY_STRING} ^var=val$
+RewriteRule "^/page(.*)$"  "rady/page.html" [R]
+[rady@localhost rady]$ sudo systemctl restart httpd
+d........................................................................
+RewriteCond %{QUERY_STRING} ^([^&]+)=([^&]+)$
+RewriteRule "^/rady$" "path/%1/%2?"  [R]
+for each one
+[rady@localhost rady]$ sudo systemctl restart httpd
+

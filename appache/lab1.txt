@@ -1,0 +1,14 @@
+
+[rady@localhost html]$ sudo nano .haccsess
+
+AuthType Basic
+AuthName "rady"
+AuthUserFile "/var/www/html.htpasswd"
+rquire valid-user
+rady@localhost html]$ sudo htpasswd -c .htpasswd radi
+[sudo] password for rady: 
+New password: 
+Re-type new password: 
+Adding password for user radi
+
+

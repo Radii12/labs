@@ -1,0 +1,221 @@
+1
+[root@localhost ~]# useradd user5
+[root@localhost ~]# useradd user6
+[root@localhost ~]# useradd user7
+[root@localhost ~]# passwd user1
+Changing password for user user1.
+New password:
+BAD PASSWORD: The password is shorter than 8 characters
+Retype new password:
+passwd: all authentication tokens updated successfully.
+[root@localhost ~]# passwd user2
+Changing password for user user2.
+New password:
+BAD PASSWORD: The password is shorter than 8 characters
+Retype new password:
+New password:
+BAD PASSWORD: The password is shorter than 8 characters
+Retype new password:
+passwd: all authentication tokens updated successfully.
+[root@localhost ~]# ls
+bench.py  hello.c
+[root@localhost ~]# tail -7 /etc/passwd
+user1:x:1000:1000::/home/user1:/bin/bash
+user2:x:1001:1001::/home/user2:/bin/bash
+user3:x:1002:1002::/home/user3:/bin/bash
+user4:x:1003:1003::/home/user4:/bin/bash
+user5:x:1004:1004::/home/user5:/bin/bash
+user6:x:1005:1005::/home/user6:/bin/bash
+user7:x:1006:1006::/home/user7:/bin/bash
+[root@localhost ~]#  
+
+
+
+2..........................................
+
+[root@localhost ~]# groupadd -g 10000 sales
+[root@localhost ~]# groupadd -g 10001 hr
+[root@localhost ~]# groupadd -g 10002 web
+
+3..........................................
+root@localhost ~]# usermod -aG sales user1
+[root@localhost ~]# usermod -aG sales user2
+[root@localhost ~]# usermod -aG hr user3
+
+usermod -aG web user7
+[root@localhost ~]# usermod -aG hr user4
+[root@localhost ~]#
+[root@localhost ~]# usermod -aG web user5
+[root@localhost ~]# usermod -aG web user6
+[root@localhost ~]#
+[root@localhost ~]# usermod -aG sales user7
+[root@localhost ~]# usermod -aG hr user7
+[root@localhost ~]# usermod -aG web user7
+
+[root@localhost ~]# tail -10 /etc/group
+user1:x:1000:
+user2:x:1001:
+user3:x:1002:
+user4:x:1003:
+user5:x:1004:
+user6:x:1005:
+user7:x:1006:
+sales:x:10000:user1,user2,user7
+hr:x:10001:user3,user4,user7
+web:x:10002:user5,user6,user7usermod -aG sales user2
+
+
+4.........................................
+
+[root@localhost ~]# groups user1
+user1 : user1 sales
+[root@localhost ~]# groups user1
+user1 : user1 sales
+[root@localhost ~]# groups user2
+user2 : user2 sales
+[root@localhost ~]# groups user3
+user3 : user3 hr
+[root@localhost ~]# groups user4
+user4 : user4 hr
+[root@localhost ~]# groups user5
+user5 : user5 web
+[root@localhost ~]# groups user6
+user6 : user6 web
+[root@localhost ~]# groups user7
+
+
+5..........................................
+[root@localhost ~]# mkdir /depts /depts/sales /depts/hr /depts/web
+[root@localhost ~]# ls /depts
+hr  sales  web
+
+
+6.........................................
+[root@localhost ~]# mkdir depts
+[root@localhost ~]# mkdir depts/sales
+[root@localhost ~]# mkdir depts/hr
+[root@localhost ~]# mkdir depts/web
+[root@localhost ~]# ls /depts
+ls: cannot access '/depts': No such file or directory
+[root@localhost ~]# ls depts
+hr  sales  web
+
+7...................................
+[root@localhost ~]# chmod 755 depts
+[root@localhost ~]# chmod 770 depts/sales
+[root@localhost ~]# chmod 770 depts/hr
+[root@localhost ~]# chmod 770 depts/web
+8.......................................
+[root@localhost ~]# chmod g+s depts/sales
+[root@localhost ~]# chmod g+s depts/hr
+[root@localhost ~]# chmod g+s depts/web
+
+9..............................................
+su - user2
+[root@localhost ~]# usermod -aG wheel user2
+touch depts
+cd depts
+mkdir sales hr web
+cd ..
+[user2@localhost ~]$ touch depts/sales/user2.txt
+[user2@localhost ~]$ touch depts/hr/user2.txt
+[user2@localhost ~]$ touch depts/web/user2.txt
+[user2@localhost ~]$ touch depts/hr/user2.text
+[user2@localhost ~]$ touch depts/sales/user2.text
+[user2@localhost ~]$ touch depts/web/user2.text
+
+10..................................................
+
+visudo
+
+user3 ALL=(ALL) /bin/mount, /bin/umount
+user4 ALL=(ALL) /bin/mount, /bin/umount
+user5 ALL=(ALL) /sbin/fdisk
+
+11............................................
+[root@localhost ~]# su user3
+[user3@localhost ~]$ sudo umount /boot
+exit
+120..................................
+
+su - user4
+sudo mount -o remount /boot
+sudo fdisk -l
+
+13...................................
+
+[root@localhost ~]# mkdir /app
+[root@localhost ~]# chmod 770 /app
+[root@localhost ~]#  chgrp sales /app
+[root@localhost ~]# chmod g+rx /app
+14..................................
+cd app
+[root@localhost ~]# touch /app/f1
+[root@localhost ~]# chmod g+rw /app/f1
+[root@localhost ~]# sudo chgrp sales file.txt
+
+15-
+
+chmod g+s /app
+
+16-
+
+sudo mkdir -p /opt/research
+sudo chown root:root /opt/research
+sudo chmod 770 /opt/research
+sudo groupadd grads
+sudo groupadd profs
+sudo groupadd interns
+sudo usermod -aG grads,profs,root <colleague_username>
+sudo usermod -aG interns <colleague_username>
+sudo chgrp profs /opt/research
+sudo chmod g+rwxs /opt/research
+sudo setfacl -m g:profs:rw /opt/research
+sudo setfacl -m g:interns:r /opt/research
+
+17-
+sudo setenforce 0
+
+18-
+getenforce
+
+19-
+sudo sed -i 's/SELINUX=permissive/SELINUX=enforcing/' /etc/selinux/config
+
+20.............
+sudo setenforce 1
+
+
+21.............................
+
+sudo cp /etc/resolv.conf ~root/
+
+22.......................................
+
+ls -lZ /etc/resolv.conf
+
+23 ..........................................
+
+sudo mv ~root/resolv.conf /etc/resolv.conf
+
+24 ............................... 
+ls -lZ /etc/resolv.conf
+
+25 ..................................
+sudo restorecon /etc/resolv.conf
+
+26 ...................................
+
+ls -lZ /etc/resolv.conf
+
+27 .................................
+
+sudo nano /etc/ssh/sshd_config
+
+28..................................
+
+ssh-keygen -t rsa
+
+30 ....................................
+
+sudo systemctl restart ssh
